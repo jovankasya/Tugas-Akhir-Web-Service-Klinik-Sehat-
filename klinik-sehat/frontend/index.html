@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Klinik Sehat</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #2563eb;
+            --secondary: #60a5fa;
+            --accent: #3b82f6;
+            --light: #eff6ff;
+            --dark: #1e293b;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --gray: #64748b;
+            --gray-light: #f1f5f9;
+            --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            --radius: 16px;
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: white;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .logo {
+            padding: 24px;
+            text-align: center;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .logo h1 {
+            color: var(--primary);
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo p {
+            color: var(--gray);
+            font-size: 12px;
+        }
+
+        .user-info {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid var(--gray-light);
+        }
+
+        .user-avatar {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            margin-right: 12px;
+        }
+
+        .user-details h4 {
+            font-size: 16px;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .user-details span {
+            font-size: 12px;
+            color: var(--gray);
+            background: var(--gray-light);
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            padding: 14px 24px;
+            color: var(--gray);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-light);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+
+        .nav-item.active {
+            background: linear-gradient(90deg, rgba(37, 99, 235, 0.1), transparent);
+            color: var(--primary);
+            border-left: 4px solid var(--primary);
+        }
+
+        .nav-item i {
+            width: 24px;
+            margin-right: 12px;
+            font-size: 18px;
+        }
+
+        .logout-btn {
+            margin: 20px;
+            padding: 14px;
+            background: linear-gradient(90deg, var(--danger), #dc2626);
+            color: white;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.3);
+        }
+
+        .logout-btn i {
+            margin-right: 8px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 0;
+        }
+
+        .topbar {
+            background: white;
+            padding: 20px 32px;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+        }
+
+        .topbar h2 {
+            color: var(--dark);
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .stats-cards {
+            padding: 32px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 24px;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 16px;
+            font-size: 24px;
+            color: white;
+        }
+
+        .icon-blue { background: linear-gradient(135deg, var(--primary), var(--secondary)); }
+        .icon-green { background: linear-gradient(135deg, #10b981, #34d399); }
+        .icon-orange { background: linear-gradient(135deg, #f59e0b, #fbbf24); }
+        .icon-purple { background: linear-gradient(135deg, #8b5cf6, #a78bfa); }
+
+        .stat-info h3 {
+            font-size: 28px;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+
+        .stat-info p {
+            color: var(--gray);
+            font-size: 14px;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 0 32px 32px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .page-header h3 {
+            font-size: 24px;
+            color: var(--dark);
+        }
+
+        .btn-primary {
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+        }
+
+        .btn-primary i {
+            margin-right: 8px;
+        }
+
+        /* Forms */
+        .form-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 24px;
+            box-shadow: var(--shadow);
+            margin-bottom: 32px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--dark);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid var(--gray-light);
+            border-radius: 12px;
+            font-size: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        /* Tables */
+        .table-container {
+            background: white;
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--gray-light);
+            transition: background 0.2s ease;
+        }
+
+        tbody tr:hover {
+            background: var(--gray-light);
+        }
+
+        td {
+            padding: 16px;
+            color: var(--dark);
+            font-size: 14px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            font-size: 16px;
+        }
+
+        .btn-edit {
+            background: rgba(37, 99, 235, 0.1);
+            color: var(--primary);
+        }
+
+        .btn-delete {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger);
+        }
+
+        .btn-view {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+        }
+
+        .btn-icon:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Alert */
+        .alert {
+            padding: 16px;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            display: none;
+        }
+
+        .alert-success {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid var(--success);
+            color: var(--success);
+        }
+
+        .alert-error {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid var(--danger);
+            color: var(--danger);
+        }
+
+        .close-alert {
+            background: none;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .logo h1, .logo p, .user-details, .nav-item span {
+                display: none;
+            }
+            
+            .user-info {
+                justify-content: center;
+                padding: 20px 0;
+            }
+            
+            .nav-item {
+                justify-content: center;
+                padding: 16px;
+            }
+            
+            .nav-item i {
+                margin: 0;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                display: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+            }
+            
+            .stats-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .table-container {
+                overflow-x: auto;
+            }
+            
+            table {
+                min-width: 600px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <h1>Klinik Sehat</h1>
+            <p>Sistem Informasi Manajemen</p>
+        </div>
+
+        <div class="user-info">
+            <div class="user-avatar" id="userAvatar">A</div>
+            <div class="user-details">
+                <h4 id="userName">Admin</h4>
+                <span id="userRole">admin</span>
+            </div>
+        </div>
+
+        <nav class="nav-menu">
+            <button class="nav-item active" onclick="showPage('dashboard')">
+                <i class="fas fa-home"></i>
+                <span>Dashboard</span>
+            </button>
+            <button class="nav-item" onclick="showPage('patients')">
+                <i class="fas fa-user-injured"></i>
+                <span>Pasien</span>
+            </button>
+            <button class="nav-item" onclick="showPage('doctors')">
+                <i class="fas fa-user-md"></i>
+                <span>Dokter</span>
+            </button>
+            <button class="nav-item" onclick="showPage('appointments')">
+                <i class="fas fa-calendar-check"></i>
+                <span>Janji Temu</span>
+            </button>
+            <button class="nav-item" onclick="showPage('medicines')">
+                <i class="fas fa-pills"></i>
+                <span>Obat</span>
+            </button>
+            <button class="nav-item" onclick="showPage('users')">
+                <i class="fas fa-users"></i>
+                <span>Users</span>
+            </button>
+        </nav>
+
+        <button class="logout-btn" onclick="logout()">
+            <i class="fas fa-sign-out-alt"></i>
+            <span>Keluar</span>
+        </button>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Topbar -->
+        <div class="topbar">
+            <h2 id="pageTitle">Dashboard</h2>
+            <div>
+                <span id="currentDate"></span>
+            </div>
+        </div>
+
+        <!-- Alert Container -->
+        <div id="alertContainer" style="padding: 0 32px; margin-top: 20px;"></div>
+
+        <!-- Dashboard Stats -->
+        <div class="stats-cards" id="dashboardStats" style="display: block;">
+            <div class="stat-card">
+                <div class="stat-icon icon-blue">
+                    <i class="fas fa-user-injured"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalPatients">0</h3>
+                    <p>Total Pasien</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-green">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalDoctors">0</h3>
+                    <p>Total Dokter</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-orange">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalAppointments">0</h3>
+                    <p>Janji Temu</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon icon-purple">
+                    <i class="fas fa-pills"></i>
+                </div>
+                <div class="stat-info">
+                    <h3 id="totalMedicines">0</h3>
+                    <p>Jenis Obat</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Pages -->
+        <div class="content-area">
+            <!-- Pasien Page -->
+            <div id="patients" class="page">
+                <div class="page-header">
+                    <h3>Manajemen Pasien</h3>
+                    <button class="btn-primary" onclick="resetPatientForm()">
+                        <i class="fas fa-plus"></i>Tambah Pasien Baru
+                    </button>
+                </div>
+                
+                <div class="form-card">
+                    <div class="form-grid" id="patientForm">
+                        <div class="form-group">
+                            <label>Nama Lengkap *</label>
+                            <input type="text" id="p_nama" class="form-control" placeholder="Nama pasien" required>
+                        </div>
+                        <div class="form-group">
+                            <label>NIK</label>
+                            <input type="text" id="p_nik" class="form-control" placeholder="Nomor Induk Kependudukan">
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal Lahir</label>
+                            <input type="date" id="p_tgl" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Jenis Kelamin</label>
+                            <select id="p_jk" class="form-control">
+                                <option value="">Pilih jenis kelamin</option>
+                                <option value="L">Laki-laki</option>
+                                <option value="P">Perempuan</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Alamat</label>
+                            <textarea id="p_alamat" class="form-control" placeholder="Alamat lengkap" rows="2"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>No Telepon</label>
+                            <input type="tel" id="p_telp" class="form-control" placeholder="08xxxxxxxxxx">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="p_email" class="form-control" placeholder="email@contoh.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Golongan Darah</label>
+                            <select id="p_gol" class="form-control">
+                                <option value="">Pilih golongan darah</option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="AB">AB</option>
+                                <option value="O">O</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1; display: flex; gap: 10px;">
+                            <button class="btn-primary" id="savePatientBtn" onclick="savePatient()" style="width: 200px;">
+                                <i class="fas fa-save"></i>Simpan Pasien
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="resetPatientForm()" style="padding: 12px 24px; background: #e2e8f0; color: #475569; border: none; border-radius: 12px; cursor: pointer; font-weight: 500;">
+                                Reset Form
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>NIK</th>
+                                <th>Tanggal Lahir</th>
+                                <th>Jenis Kelamin</th>
+                                <th>No Telepon</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="patientsData">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Dokter Page -->
+            <div id="doctors" class="page">
+                <div class="page-header">
+                    <h3>Manajemen Dokter</h3>
+                    <button class="btn-primary" onclick="resetDoctorForm()">
+                        <i class="fas fa-plus"></i>Tambah Dokter Baru
+                    </button>
+                </div>
+                
+                <div class="form-card">
+                    <div class="form-grid" id="doctorForm">
+                        <div class="form-group">
+                            <label>Nama Lengkap *</label>
+                            <input type="text" id="d_nama" class="form-control" placeholder="Nama dokter" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Spesialisasi</label>
+                            <input type="text" id="d_spec" class="form-control" placeholder="Spesialisasi dokter">
+                        </div>
+                        <div class="form-group">
+                            <label>No. STR</label>
+                            <input type="text" id="d_str" class="form-control" placeholder="Nomor STR">
+                        </div>
+                        <div class="form-group">
+                            <label>No Telepon</label>
+                            <input type="tel" id="d_telp" class="form-control" placeholder="08xxxxxxxxxx">
+                        </div>
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="d_email" class="form-control" placeholder="email@contoh.com">
+                        </div>
+                        <div class="form-group">
+                            <label>Biaya Konsultasi</label>
+                            <input type="number" id="d_fee" class="form-control" placeholder="50000">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1; display: flex; gap: 10px;">
+                            <button class="btn-primary" id="saveDoctorBtn" onclick="saveDoctor()" style="width: 200px;">
+                                <i class="fas fa-save"></i>Simpan Dokter
+                            </button>
+                            <button type="button" class="btn-secondary" onclick="resetDoctorForm()" style="padding: 12px 24px; background: #e2e8f0; color: #475569; border: none; border-radius: 12px; cursor: pointer; font-weight: 500;">
+                                Reset Form
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Spesialisasi</th>
+                                <th>No. Telepon</th>
+                                <th>Email</th>
+                                <th>Biaya</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="doctorsData">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Janji Temu Page -->
+            <div id="appointments" class="page">
+                <div class="page-header">
+                    <h3>Manajemen Janji Temu</h3>
+                    <button class="btn-primary" onclick="resetAppointmentForm()">
+                        <i class="fas fa-plus"></i>Buat Janji Baru
+                    </button>
+                </div>
+                
+                <div class="form-card">
+                    <div class="form-grid" id="appointmentForm">
+                        <div class="form-group">
+                            <label>Pasien *</label>
+                            <select id="a_patient" class="form-control" required>
+                                <option value="">Pilih pasien</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Dokter *</label>
+                            <select id="a_doctor" class="form-control" required>
+                                <option value="">Pilih dokter</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Tanggal Janji *</label>
+                            <input type="date" id="a_date" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Waktu Mulai</label>
+                            <input type="time" id="a_waktu_mulai" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Waktu Selesai</label>
+                            <input type="time" id="a_waktu_selesai" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label>Keluhan</label>
+                            <textarea id="a_keluhan" class="form-control" placeholder="Keluhan pasien" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Status</label>
+                            <select id="a_status" class="form-control">
+                                <option value="pending">Pending</option>
+                                <option value="confirmed">Confirmed</option>
+                                <option value="completed">Completed</option>
+                                <option value="cancelled">Cancelled</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <button class="btn-primary" onclick="saveAppointment()" style="width: 200px;">
+                                <i class="fas fa-save"></i>Buat Janji Temu
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Pasien</th>
+                                <th>Dokter</th>
+                                <th>Tanggal</th>
+                                <th>Waktu</th>
+                                <th>Keluhan</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="appointmentsData">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Obat Page -->
+            <div id="medicines" class="page">
+                <div class="page-header">
+                    <h3>Manajemen Obat</h3>
+                    <button class="btn-primary" onclick="resetMedicineForm()">
+                        <i class="fas fa-plus"></i>Tambah Obat Baru
+                    </button>
+                </div>
+                
+                <div class="form-card">
+                    <div class="form-grid" id="medicineForm">
+                        <div class="form-group">
+                            <label>Nama Obat *</label>
+                            <input type="text" id="m_name" class="form-control" placeholder="Nama obat" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Stok *</label>
+                            <input type="number" id="m_stock" class="form-control" placeholder="Jumlah stok" required min="0">
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <button class="btn-primary" onclick="saveMedicine()" style="width: 200px;">
+                                <i class="fas fa-save"></i>Simpan Obat
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nama Obat</th>
+                                <th>Stok</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="medicinesData">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Users Page -->
+            <div id="users" class="page">
+                <div class="page-header">
+                    <h3>Manajemen Users</h3>
+                    <button class="btn-primary" onclick="resetUserForm()">
+                        <i class="fas fa-plus"></i>Tambah User Baru
+                    </button>
+                </div>
+                
+                <div class="form-card">
+                    <div class="form-grid" id="userForm">
+                        <div class="form-group">
+                            <label>Username *</label>
+                            <input type="text" id="u_name" class="form-control" placeholder="Username" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Role *</label>
+                            <select id="u_role" class="form-control" required>
+                                <option value="">Pilih role</option>
+                                <option value="admin">Admin</option>
+                                <option value="user">User</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <button class="btn-primary" onclick="saveUser()" style="width: 200px;">
+                                <i class="fas fa-save"></i>Tambah User
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Role</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersData">
+                            <!-- Data akan diisi oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- JavaScript -->
+    <script src="js/app.js"></script>
+</body>
+</html>
