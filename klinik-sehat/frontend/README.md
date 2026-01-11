@@ -46,11 +46,12 @@ B. LANGKAH-LANGKAH INSTALASI:
 C. INFORMASI LOGIN SISTEM (DATA SAMPLE):
 
 1. Login ke Aplikasi:
-   URL: http://localhost/klinik_sehat/login.html
+   URL: http://localhost/klinik-sehat/frontend/login.html
+        http://localhost/klinik-sehat/frontend/index.html
    Username: admin
    Password: admin123
 
-2. Login phpMyAdmin:
+3. Login phpMyAdmin:
    URL: http://localhost/phpmyadmin
    Username: root
    Password: (kosong)
@@ -82,3 +83,4 @@ folder node_modules.zip di ekstrac lalu di masukkan ke dalam folder backend
            SELAMAT MENGGUNAKAN!
 
 ============================================
+
