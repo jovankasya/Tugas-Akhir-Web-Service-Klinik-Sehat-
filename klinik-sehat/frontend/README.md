@@ -77,6 +77,8 @@ Nama: [Jovanka Syakira Mulya]
 NIM: [23.01.53.0019]
 Email: [jovankasyakira0019@mhs.unisbank.ac.id]
 
+folder node_modules.zip di ekstrac lalu di masukkan ke dalam folder backend
 ============================================
            SELAMAT MENGGUNAKAN!
+
 ============================================
